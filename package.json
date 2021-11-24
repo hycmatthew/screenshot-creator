@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "homepage": "https://hycmatthew.github.io/screenshot-creator",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -29,6 +30,7 @@
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.5.1",
     "file-loader": "^6.2.0",
+    "gh-pages": "^3.2.3",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.4.5",
     "sass": "^1.43.4",
