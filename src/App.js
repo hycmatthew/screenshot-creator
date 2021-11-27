@@ -1,8 +1,17 @@
 import React from "react";
-import './App.scss'; 
+import './App.scss';
+import { MainSelectPage } from './MainSelectPage.js'; 
+import { Provider } from './ImageContext.js'; 
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+
 
 export const App = () => {
     return(
-        <p>123123</p>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/preview" element={<Provider />} />
+                <Route exact path="/" element={<MainSelectPage />} />
+            </Routes>
+        </BrowserRouter>
     );
 };
