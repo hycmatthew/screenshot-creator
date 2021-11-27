@@ -1,11 +1,7 @@
 import React, { useReducer } from "react";
 import { CanvasWindow } from "./CanvasWindow";
 
-export default Context = React.createContext();
-
-export function Context(){
-    const [state, dispatch] = useReducer(dataReducer, initialState);
-}
+export const Context = React.createContext();
 
 export const deviceSize = {
     "iPhone 13": {width: 1242, height: 2688, image: ""},
@@ -16,6 +12,7 @@ export const deviceSize = {
     "iPad Pro 11": {width: 1668, height: 2388, image: ""},
     "iPad Air": {width: 1668, height: 2224, image: ""}
 }
+
 export const backgroundTypeEnum = Object.freeze({"single":1, "gradient":2, "image": 3})
 
 export const deviceInitPosition = {
@@ -81,7 +78,7 @@ function dataReducer(state, action) {
     }
 };
 
-export const Provider = ({ children }) => {
+export const Provider = () => {
     const [state, dispatch] = useReducer(dataReducer, initialState);
   
     return (

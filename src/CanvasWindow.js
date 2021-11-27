@@ -21,6 +21,7 @@ export function CanvasWindow() {
             }
             reader.readAsDataURL(state.imageFiles["iPhone 13"].image);
             screenImage.onload = function() {
+                console.log(state.imageFiles["iPhone 13"].image);
                 resolve(screenImage);
             }
         });
@@ -37,8 +38,23 @@ export function CanvasWindow() {
         });
     }
 
+    function deviceSizeLogic(sizeNum){
+        let resizeFactor = screenSize[0]/deviceSize[1]
+        switch (sizeNum) {
+            case 1:
+                resizeFactor *= 0.85
+                break
+            case 3:
+                resizeFactor *= 1.2
+                break
+            default:
+                break
+        }
+        console.log(resizeFactor);
+        return resizeFactor
+    }
+
     useEffect(() => {
-        console.log(state.deviceType);
         let setScreenWidth = state.deviceType.height;
         let setScreenHeight = state.deviceType.width;
 
@@ -107,26 +123,29 @@ export function CanvasWindow() {
 
 
     useEffect(() => {
-        console.log(state.imageFiles);
         let setStartX = parseInt(state.deviceXPos);
         let setStartY = parseInt(state.deviceYPos);
         let setScreenWidth = screenSize[1];
         let setScreenHeight = screenSize[0];
+        
+        let sizeScaleFactor = deviceSizeLogic(state.deviceSize);
+        const setDeviceWidth = sizeScaleFactor*deviceSize[0];
+        const setDeviceHeight =sizeScaleFactor*deviceSize[1];
 
         let canvas = document.getElementById("canvas-device");
         canvas.width = setScreenWidth;
         canvas.height = setScreenHeight;
-        let ctx = canvas.getContext("2d");
+        let ctx = canvas.getContext("2d");  
 
         if(state.containImage){
             (async () => {
-                const halfScreenWidth = setScreenWidth/2;
-                const halfScreenHeight = setScreenHeight/2;
-                const setDeviceWidth = deviceSize[0]/2;
-                const setDeviceHeight = deviceSize[1]/2;
+                const halfScreenWidth = setScreenWidth*sizeScaleFactor;
+                const halfScreenHeight = setScreenHeight*sizeScaleFactor;
+                const movePosX = 114*sizeScaleFactor;
+                const movePosY = 84*sizeScaleFactor;
 
                 const screenLoad = await screenImageLoad();
-                ctx.drawImage(screenLoad, setStartX+57, setStartY+42, halfScreenHeight, halfScreenWidth);
+                ctx.drawImage(screenLoad, setStartX+movePosX, setStartY+movePosY, halfScreenHeight, halfScreenWidth);
                 const deviceLoad = await deviceImageLoad();
                 ctx.drawImage(deviceLoad, setStartX, setStartY, setDeviceWidth, setDeviceHeight);
 
@@ -139,8 +158,6 @@ export function CanvasWindow() {
             imageObj1.src = iPhone13Image;
 
             imageObj1.onload = function() {
-                const setDeviceWidth = deviceSize[0]/2;
-                const setDeviceHeight = deviceSize[1]/2;
                 ctx.drawImage(imageObj1, setStartX, setStartY, setDeviceWidth, setDeviceHeight);
                 let imgData = canvas.toDataURL("image/png");
                 let canvasImage = document.getElementById('canvas-img-device');
